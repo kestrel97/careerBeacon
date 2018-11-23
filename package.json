@@ -1,0 +1,31 @@
+{
+  "name": "career",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "bcryptjs": "*",
+    "body-parser": "*",
+    "cors": "*",
+    "express": "*",
+    "jsonwebtoken": "*",
+    "mysql": "*",
+    "passport": "*",
+    "passport-jwt": "*",
+    "router": "^1.3.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kestrel97/careerBeacon.git"
+  },
+  "author": "Anas, Okesh, Usama, Hamza",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kestrel97/careerBeacon/issues"
+  },
+  "homepage": "https://github.com/kestrel97/careerBeacon#readme"
+}
