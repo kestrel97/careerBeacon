@@ -6,7 +6,15 @@ const passport = require('passport');
 
 const app = express();
 
+const users = require('./routes/users');
+
 const port =3000;
+
+// middlewares
+app.use(cors());
+app.use(bodyParser.json());
+
+app.use('/users', users );
 
 // indexRoute
 app.get('/', (req,res) =>{
