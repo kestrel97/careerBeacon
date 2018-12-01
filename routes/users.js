@@ -1,48 +1,74 @@
 const express = require('express');
-const database = require('../config/database')
-const mysql = require('mysql');
+const jwt = require('jsonwebtoken');
+const passport = require('passport');
 const router = express.Router();
+const AuthService = require('../services/authService')
+const general_config = require('../config/general_config');
 
-// connecting DB
-var pool = mysql.createPool({
-  host     : database.host,
-  user     : database.username,
-  password : database.password,
-  database : database.database
+const authService = new AuthService();
+
+router.post('/register', (req, res) => {
+    let user = {
+        "username": req.body.username,
+        "password": req.body.password,
+        "percentage": req.body.percentage,
+        "background": req.body.background,
+    }
+
+    authService.registerUser(user, (err) => {
+        if (err) {
+            res.json({
+                success: false,
+                msg: err
+            })
+        } else {
+            res.json({
+                success: true,
+                msg: 'Registered successfully.'
+            })
+        }
+    });
 });
 
-pool.getConnection((err,connection) => {
-  if (err) {
-    console.error('Error Connecting MySQL: ' + err);
-    return;
-  }
-  console.log('MySQL connected successfully.');
+router.post('/authenticate', (req, res) => {
+    const username = req.body.username;
+    const password = req.body.password;
 
-  router.post('/register', (req, res) => {
-    // connection.query('SELECT * FROM user', function (error, results, fields) {
-      // res.send(results);
-    // });
-    var sql = "INSERT INTO test (qid, questions) VALUES (1,'what do you want to do in life?')";
-    // var values = [req.body.fname,req.body.lname,req.body.email,req.body.pass,req.body.access];
-      connection.query(sql, function (err, result) {
-        if (err) throw err;
-        res.send("Number of records inserted: " + result.affectedRows);
-      });
+    authService.getUserByUsername(username, (err, user) => {
+        if (err || !user) {
+            return res.json({
+                success: 0,
+                msg: 'Failed authentication'
+            });
+        }
 
-  });
+        authService.comparePassword(password, user.std_password, (err, isMatched) => {
 
+            if (err || !isMatched) {
+                return res.json({success: 0, msg: 'Wrong password'});
+            }
+
+            const token = jwt.sign(user, general_config.secret, {
+                expiresIn: 604800 // 1 week
+            });
+
+            return res.json({
+                success: 1,
+                msg: "Logged in successfully",
+                token: 'JWT ' + token,
+                user: {
+                    id: user.std_id,
+                    username: user.username,
+
+                }
+            });
+        })
+
+    });
 });
 
-
-
-
-
-router.get('/authenticate', (req, res) => {
-  res.send('AUTHENTICATE');
-
+router.get('/profile', passport.authenticate('jwt', {session: false}), (req, res, next) => {
+    res.send({user: req.user})
 });
-
-
-
 
 module.exports = router;
