@@ -7,14 +7,14 @@ class AuthService {
                 callback("User already exists or problems accessing database");
             } else {
                 bcrypt.genSalt(10, (err, salt) => {
-                    bcrypt.hash(user.password, salt, (err, hash) => {
+                    bcrypt.hash(user.std_password, salt, (err, hash) => {
                         if (err) {
                             callback(err);
                         }
-                        user.password = hash;
+                        user.std_password = hash;
 
                         var sql = "INSERT INTO student (username, std_password, percentage, background) VALUES (?, ?, ?, ?)";
-                        var values = [user.username, user.password, user.percentage, user.background];
+                        var values = [user.username, user.std_password, user.percentage, user.background];
 
                         db.query(sql, values, (err, result) => {
                             if (err) {
@@ -45,9 +45,9 @@ class AuthService {
         })
     }
 
-    comparePassword(password, hash, callback) {
-        
-        bcrypt.compare(password, hash, (err, isMatched) => {
+    comparePassword(std_password, hash, callback) {
+
+        bcrypt.compare(std_password, hash, (err, isMatched) => {
             if (err) {
                 console.log(err);
             }

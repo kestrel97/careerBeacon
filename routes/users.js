@@ -10,7 +10,7 @@ const authService = new AuthService();
 router.post('/register', (req, res) => {
     let user = {
         "username": req.body.username,
-        "password": req.body.password,
+        "std_password": req.body.std_password,
         "percentage": req.body.percentage,
         "background": req.body.background,
     }
@@ -32,7 +32,7 @@ router.post('/register', (req, res) => {
 
 router.post('/authenticate', (req, res) => {
     const username = req.body.username;
-    const password = req.body.password;
+    const std_password = req.body.std_password;
 
     authService.getUserByUsername(username, (err, user) => {
         if (err || !user) {
@@ -42,10 +42,10 @@ router.post('/authenticate', (req, res) => {
             });
         }
 
-        authService.comparePassword(password, user.std_password, (err, isMatched) => {
+        authService.comparePassword(std_password, user.std_password, (err, isMatched) => {
 
             if (err || !isMatched) {
-                return res.json({success: 0, msg: 'Wrong password'});
+                return res.json({success: 0, msg: 'Wrong std_password'});
             }
 
             const token = jwt.sign(user, general_config.secret, {
