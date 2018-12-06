@@ -1,3 +1,18 @@
 <h2 class="page-header">Dashboard</h2>
-<p *ngIf="user">Welcome to your Dashboard</p>
+<p >Welcome to your Dashboard</p>
 <hr>
+<form (submit)="onGenrateTest()">
+  <div class="form-group">
+    <h2>Please Select Preference</h2>
+
+    <!-- <input type="text" [(ngModel)]="username" name="username" class="form-control"> -->
+    <input type="radio" [(ngModel)]="preference" name="preference" value="1" id='1' required> <label for="1">Engineering</label> <br>
+    <input type="radio" [(ngModel)]="preference" name="preference" value="2" id='2'> <label for="2">Medical</label> <br>
+    <input type="radio" [(ngModel)]="preference" name="preference" value="3" id='3'> <label for="3">Bussiness</label> <br>
+    <input type="radio" [(ngModel)]="preference" name="preference" value="4" id='4'> <label for="4">Computer Science</label> <br>
+    <input type="radio" [(ngModel)]="preference" name="preference" value="5" id='5'> <label for="5">Accounts n Finance</label> <br>
+    <input type="radio" [(ngModel)]="preference" name="preference" value="6" id='6'> <label for="6">Arts</label>
+  </div>
+
+  <button class="btn btn-lg btn-primary btn-block" type="submit">Start Test</button>
+</form>

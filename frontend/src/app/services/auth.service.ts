@@ -10,7 +10,7 @@ export class AuthService {
 
   authToken: any;
   user: any;
-
+  broad: any;
   constructor(private http: Http) { }
 
   registerUser(user) {
@@ -23,10 +23,42 @@ export class AuthService {
   authenticateUser(user) {
     let headers = new Headers();
     headers.append("Content-Type", "application/json");
+
     return this.http.post('http://localhost:3000/users/authenticate', user, {headers: headers})
       .pipe(map(res => res.json()))
   }
 
+
+  setPreference(preference){
+
+    this.broad=preference;
+    let headers = new Headers();
+    let name= JSON.parse(localStorage.getItem('user'));
+    let username= name['username'];
+    console.log(username);
+    preference = {
+      preference: preference,
+      name: username
+    }
+    headers.append("Content-Type", "application/json");
+    return this.http.post('http://localhost:3000/users/setPreference', preference, {headers: headers})
+      .pipe(map(res => res.json()))
+  }
+
+  generateTest(){
+    // console.log(this.broad)
+    let headers = new Headers();
+    let bfid = {
+      bfid: this.broad
+    }
+    // console.log(bfid);
+    headers.append("Content-Type", "application/json");
+
+    console.log(bfid);
+
+    return this.http.post('http://localhost:3000/users/generateTest', bfid, {headers: headers})
+      .pipe(map(res => res.json()))
+  }
   // getProfile() {
   //   let headers = new Headers();
   //   this.loadToken();

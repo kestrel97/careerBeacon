@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,18 +8,28 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
+  preference: String;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService,
+  private router: Router) { }
   user: object;
   ngOnInit() {
-    // this.authService.getProfile().subscribe( profile => {
-    //   this.user = profile.user;
-    //
-    // },
-    // err => {
-    //   console.log(err);
-    //   return false;
-    // });
+
+
+  }
+  onGenrateTest(){
+
+    // const preference=this.preference;
+    // console.log("reached Generate Test");
+    this.authService.setPreference(this.preference).subscribe(data => {
+      if(data.success){
+        console.log("success");
+        this.router.navigate(['/test']);
+      }
+      else{
+        console.log("failure");
+      }
+    });
   }
 
 }

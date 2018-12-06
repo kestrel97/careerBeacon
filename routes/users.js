@@ -7,6 +7,53 @@ const general_config = require('../config/general_config');
 
 const authService = new AuthService();
 
+router.post('/generateTest',(req, res)=>{
+console.log(req.body.bfid);
+  let bfid={
+    bfid: req.body.bfid
+  }
+
+  authService.generateTest(bfid,(err, data)=>{
+    if (err) {
+        res.json({
+            success: false,
+            msg: err
+        })
+    } else {
+        res.json({
+            success: true,
+            questions: data
+        })
+    }
+  });
+});
+
+router.post('/setPreference',(req, res)=>{
+  // console.log(req.body);
+
+  let stuff={
+      preference: req.body.preference,
+      name: req.body.name
+  };
+  // console.log(name);
+
+  // console.log("reached router");
+  authService.setPreference(stuff,(err)=>{
+    if (err) {
+        res.json({
+            success: false,
+            msg: err
+        })
+    } else {
+        res.json({
+            success: true,
+            msg: 'preference updated successfully'
+        })
+    }
+  });
+});
+
+
 router.post('/register', (req, res) => {
     let user = {
         "username": req.body.username,
