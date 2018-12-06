@@ -1,8 +1,37 @@
-<ul>
+<div class="container">
+  <ul>
 
-  <li *ngFor="let question of questions$">
-    <strong>{{ question.questions }}</strong>
+    <span *ngFor="let question of questions$; let q_idx = index">
+      <br><br>
+      <strong>{{ question.questions }}</strong>
+      <!-- <div class="list-group">
 
-  </li>
+        <div *ngFor="let option of question.options">
+          <input type="radio" name="{{ question.qid }}" value="{{ option.flag }}"/>
+          <label class="list-group-item">{{option.body}}</label>
+        </div>
+        
+      </div> -->
 
-</ul>
+      <div class="row">
+        <div class="col-xs-12">
+          <br>
+          <div class="btn-group btn-group-vertical" data-toggle="buttons">
+            <label class="btn" *ngFor="let option of question.options; let idx = index">
+              <input type="radio" name="{{ question.qid }}" [value]="option.flag" [checked]="idx === 0" (change)="onOptionChange(option.flag, q_idx)">
+              <i class="fa fa-circle-o fa-2x"></i><i class="fa fa-dot-circle-o fa-2x"></i> <span>  {{ option.body }}</span>
+            </label>
+          </div>
+    
+        </div>
+      </div>
+    </span>
+
+    <br>
+    <form (submit)="onTestSubmit()">
+      <input type="submit">
+    </form>
+
+  </ul>
+
+</div>

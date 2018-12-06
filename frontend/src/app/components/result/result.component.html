@@ -1,3 +1,27 @@
-<p>
-  result works!
-</p>
+<div class="container">
+  <br><br>
+  <div *ngIf="unis$" class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Universiry Name</th>
+          <th>Eligibility Criteria</th>
+          <th>City</th>
+          <th>Link</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let uni of unis$">
+          <td>{{ uni.uni_name }}</td>
+          <td>{{ uni.eligibility }}</td>
+          <td>{{ uni.uni_city }}</td>
+          <td><a href="{{ uni.uni_link }}">{{ uni.uni_link }}</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div *ngIf="!unis$">
+    <h3>Unfortunately, according to our magic spell, you do not have enough compatiability with your desired preference.</h3>
+  </div>
+</div>

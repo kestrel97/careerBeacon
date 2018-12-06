@@ -11,6 +11,7 @@ export class AuthService {
   authToken: any;
   user: any;
   broad: any;
+  public isSuitable: boolean;
   constructor(private http: Http) { }
 
   registerUser(user) {
@@ -45,18 +46,37 @@ export class AuthService {
       .pipe(map(res => res.json()))
   }
 
+  setPreferenceSuitable(isSuitable) {
+    this.isSuitable = isSuitable;
+  }
+
+  fetchSuitableUni() {
+    const user = JSON.parse(localStorage.getItem('user'));
+    let headers = new Headers();
+    let data = {
+      bfid: this.broad,
+      percentage: user.percentage
+    }
+
+    console.log(this.broad);
+    headers.append("Content-Type", "application/json");
+
+    return this.http.post('http://localhost:3000/users/fetchSuitableUni', data, {headers: headers})
+      .pipe(map(res => res.json()))
+  }
+
   generateTest(){
     // console.log(this.broad)
     let headers = new Headers();
-    let bfid = {
+    let data = {
       bfid: this.broad
     }
-    // console.log(bfid);
+
+    console.log(data);
+
     headers.append("Content-Type", "application/json");
 
-    console.log(bfid);
-
-    return this.http.post('http://localhost:3000/users/generateTest', bfid, {headers: headers})
+    return this.http.post('http://localhost:3000/users/generateTest', data, {headers: headers})
       .pipe(map(res => res.json()))
   }
   // getProfile() {

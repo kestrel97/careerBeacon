@@ -7,13 +7,25 @@ const general_config = require('../config/general_config');
 
 const authService = new AuthService();
 
-router.post('/generateTest',(req, res)=>{
-console.log(req.body.bfid);
-  let bfid={
-    bfid: req.body.bfid
-  }
+router.post('/fetchSuitableUni',(req, res)=>{
+      authService.getSuitableUniversities(req.body, (err, data)=>{
+        if (err) {
+            res.json({
+                success: false,
+                msg: err
+            })
+        } else {
+            res.json({
+                success: true,
+                unis: data
+            })
+        }
+      });
+    });
 
-  authService.generateTest(bfid,(err, data)=>{
+router.post('/generateTest',(req, res)=>{
+
+  authService.generateTest(req.body, (err, data)=>{
     if (err) {
         res.json({
             success: false,
@@ -106,7 +118,7 @@ router.post('/authenticate', (req, res) => {
                 user: {
                     id: user.std_id,
                     username: user.username,
-
+                    percentage: user.percentage
                 }
             });
         })

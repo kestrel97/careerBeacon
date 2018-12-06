@@ -28,8 +28,8 @@ class AuthService {
             }
         })
     }
-    setPreference(preference, callback){
 
+    setPreference(preference, callback){
         var sql = "SELECT bf_name from broaderfield where bf_id = ?";
         var values = [preference.preference];
         db.query(sql, values, (err, result) => {
@@ -54,45 +54,31 @@ class AuthService {
         });
     }
 
-    generateTest(bfid, callback){
-      let a=[
-        body= string,
-        flag= number
-      ];
-      let qna ={
-        q = string,
-        a
-      };
+    generateTest(data, callback){
+      var sql = "SELECT bfid, test.qid, questions, CONCAT('[', GROUP_CONCAT(CONCAT('{\"body\":\"', body, '\", \"flag\":\"',flag,'\"}')), ']') as options FROM test JOIN options on test.qid = options.op_qid GROUP BY test.qid HAVING bfid = ?";   
+      var values = [data.bfid];
 
-      console.log("reached gentest");
-      console.log(bfid);
-      var sql = "SELECT qid, questions from test WHERE bfid = ?";
-      var values = [bfid.bfid];
       db.query(sql, values, (err, questions) => {
           if (err) {
               callback(err);
           } else {
-            //all questions retrieved
-              console.log(questions[0].qid);
-
-              qna.q.push(questions[0].questions);
-
-              //getting options for each question
-              var sql = "SELECT body,flag from options WHERE op_qid = ?";
-              var values = [questions[0].qid];
-              db.query(sql, values, (err, answers) => {
-                  if (err) callback(err);
-
-                  else{
-                    qna.a.push(answers);
-                    console.log(qna);
-                  }
-              })
-
               callback(null, questions);
           }
       });
     }
+
+    getSuitableUniversities(data, callback){
+        var sql = "SELECT DISTINCT cri_eligibility as eligibility, uni_Name as uni_name, uni_city, Link as uni_link FROM student, criteria JOIN university ON criteria.cri_uid = university.Uni_ID WHERE cri_eligibility <= ? && cri_bfid = ? ORDER BY cri_eligibility DESC";
+        var values = [data.percentage, data.bfid];
+  
+        db.query(sql, values, (err, result) => {
+            if (err) {
+                callback(err);
+            } else {
+                callback(null, result);
+            }
+        });
+      }
 
     isUsernameExist(username, callback) {
         var sql = "SELECT * FROM student WHERE username = ?";
