@@ -59,7 +59,7 @@ export class TestComponent implements OnInit {
     console.log(correct_answers);
 
     let correct_perc = correct_answers / this.questions$.length * 100;
-    if (correct_perc < 10) {
+    if (correct_perc <= 60) {
       this.authService.setPreferenceSuitable(false);
     } else {
       this.authService.setPreferenceSuitable(true);
