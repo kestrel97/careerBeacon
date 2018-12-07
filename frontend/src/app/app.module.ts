@@ -17,6 +17,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 import {ValidateService} from './services/validate.service';
 import {AuthService} from './services/auth.service';
+import { FooterComponent } from './components/footer/footer.component';
 
 
 const appRoutes: Routes =  [
@@ -37,7 +38,8 @@ const appRoutes: Routes =  [
     HomeComponent,
     TestComponent,
     ResultComponent,
-    DashboardComponent
+    DashboardComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

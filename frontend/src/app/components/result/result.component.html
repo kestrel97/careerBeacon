@@ -1,6 +1,6 @@
 <div class="container">
-  <br><br>
   <div *ngIf="unis$" class="table-responsive">
+    <h2>Suggested Universities</h2>
     <table class="table">
       <thead>
         <tr>
@@ -22,6 +22,9 @@
     </table>
   </div>
   <div *ngIf="!unis$">
-    <h3>Unfortunately, according to our magic spell, you do not have enough compatiability with your desired preference.</h3>
+    <h3>
+      Unfortunately, according to our magic sauce, you do not have enough compatiability with your desired preference.
+      Do not be disheart. You may wish to choose another major by <a href="dashboard">clicking here.</a>
+    </h3>
   </div>
 </div>
